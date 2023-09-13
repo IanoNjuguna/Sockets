@@ -58,7 +58,6 @@ int main(void)
 		printf("Connection Error: Failed to connect to the remote socket.\n\n");
 		printf("Server Details: %s\n", strerror(errno));
 	}
-
 	else
 	{
 		/* Receive data from the server */
