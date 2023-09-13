@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <errno.h>
+#include <string.h>
 
 /**
  * types.h  - for definitions about the socket functions used
@@ -53,17 +55,20 @@ int main(void)
 	/* Check for an error with the connection */
 	if (connection_status == -1)
 	{
-		perror("There was an error making a connection to the remote socket \n \n");
+		printf("Connection Error: Failed to connect to the remote socket.\n\n");
+		printf("Server Details: %s\n", strerror(errno));
 	}
 
-	/* Receive data from the server */
-	recv(network_socket, &server_response, sizeof(server_response), 0);
+	else
+	{
+		/* Receive data from the server */
+		recv(network_socket, &server_response, sizeof(server_response), 0);
 
-	/* Print out the server's response */
-	printf("The server sent the following data: %s\n", server_response);
+		/* Print out the server's response */
+		printf("The server sent the following data: %s\n", server_response);
 
-	/* Close the socket */
-	close(network_socket);
-
+		/* Close the socket */
+		close(network_socket);
+	}
 	return (0);
 }
