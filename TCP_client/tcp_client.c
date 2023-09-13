@@ -28,11 +28,28 @@
  *
  * 0: default protocol, i.e TCP
  */
-int sock(network_socket)
+int sock(network_socket, connection_status)
 {
 	/**int network_socket;**/
 
+	/* Create a socket */
 	network_socket = socket(AF_INET, SOCK_STREAM, 0);
+
+	/* Connect to a remote address */
+	/* Specify an address for the socket */
+	struct sockaddr_in server_address;
+
+	server_address.sin_family = AF_INET;
+	server_address.sin_port = htons(9003);
+	server_address.sin_addr.s_addr = INADDR_ANY;
+
+	connection_status = connect(network_socket, (struct sockaddr *) & server_address, sizeof(server_address));
+
+	/* Check for an error with the connection */
+	if (connection_status == -1)
+	{
+		printf("There was an error making a connection to the remote socket \n \n");
+	}
 
 	return (0);
 }
