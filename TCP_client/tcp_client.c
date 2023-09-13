@@ -29,8 +29,11 @@
  *
  * 0: default protocol, i.e TCP
  */
-int sockt(network_socket, connection_status)
+int sockt(int network_socket, int connection_status)
 {
+	char server_response[256];
+	struct sockaddr_in server_address;
+
 	/**int network_socket;**/
 
 	/* Create a socket */
@@ -38,8 +41,6 @@ int sockt(network_socket, connection_status)
 
 	/* Connect to a remote address */
 	/* Specify an address for the socket */
-	struct sockaddr_in server_address;
-
 	server_address.sin_family = AF_INET;
 	server_address.sin_port = htons(9003);
 	server_address.sin_addr.s_addr = INADDR_ANY;
@@ -53,8 +54,6 @@ int sockt(network_socket, connection_status)
 	}
 
 	/* Receive data from the server */
-	char server_response[256]; /* Hold info you get from server */
-
 	recv(network_socket, &server_response, sizeof(server_response), 0);
 
 	/* Print out the server's response */
