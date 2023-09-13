@@ -8,21 +8,22 @@
 #include <netinet/in.h>
 
 /**
- * servr - a TCP server
+ * main - a TCP server
  *
  * @server_socket: socket call
  *
  */
-int servr(server_socket, client_socket)
+int main(void)
 {
+	int server_socket;
+	int client_socket;
+	struct sockaddr_in server_address;
 	char server_message[256] = "You have reached the server";
 
 	/* Create the server socket */
 	server_socket = socket(AF_INET, SOCK_STREAM, 0);
 
 	/* Define the server address */
-	struct sockaddr_in server_address;
-
 	server_address.sin_family = AF_INET;
 	server_address.sin_port = htons(9003);
 	server_address.sin_addr.s_addr = INADDR_ANY;
