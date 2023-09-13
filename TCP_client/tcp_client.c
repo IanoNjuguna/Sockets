@@ -16,7 +16,7 @@
 #include <netinet/in.h>
 
 /**
- * sockt - creates a socket
+ * main - creates a socket
  *
  * @network_socket: stores the result of the socket() function in an int,
  *					basically a file descriptor
@@ -29,8 +29,11 @@
  *
  * 0: default protocol, i.e TCP
  */
-int sockt(int network_socket, int connection_status)
+int main(void)
 {
+
+	int network_socket;
+	int connection_status;
 	char server_response[256];
 	struct sockaddr_in server_address;
 
