@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 /**
  * types.h  - for definitions about the socket functions used
@@ -15,7 +16,7 @@
 #include <netinet/in.h>
 
 /**
- * sock - creates a socket
+ * sockt - creates a socket
  *
  * @network_socket: stores the result of the socket() function in an int,
  *					basically a file descriptor
@@ -28,7 +29,7 @@
  *
  * 0: default protocol, i.e TCP
  */
-int sock(network_socket, connection_status)
+int sockt(network_socket, connection_status)
 {
 	/**int network_socket;**/
 
@@ -43,13 +44,24 @@ int sock(network_socket, connection_status)
 	server_address.sin_port = htons(9003);
 	server_address.sin_addr.s_addr = INADDR_ANY;
 
-	connection_status = connect(network_socket, (struct sockaddr *) & server_address, sizeof(server_address));
+	connection_status = connect(network_socket, (struct sockaddr *) &server_address, sizeof(server_address));
 
 	/* Check for an error with the connection */
 	if (connection_status == -1)
 	{
-		printf("There was an error making a connection to the remote socket \n \n");
+		perror("There was an error making a connection to the remote socket \n \n");
 	}
+
+	/* Receive data from the server */
+	char server_response[256]; /* Hold info you get from server */
+
+	recv(network_socket, &server_response, sizeof(server_response), 0);
+
+	/* Print out the server's response */
+	printf("The server sent the following data: %s\n", server_response);
+
+	/* Close the socket */
+	close(network_socket);
 
 	return (0);
 }
