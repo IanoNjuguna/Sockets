@@ -16,6 +16,8 @@
 int main(void)
 {
 	FILE *html_data;
+	char response_data[1024];
+	char http_header[2048] = "HTTP/1.1 200 0K \r\n\n";
 	int server_socket;
 	struct sockaddr_in server_address;
 	int client_socket;
@@ -23,10 +25,8 @@ int main(void)
 	/* Open a file to Serve */
 	html_data = fopen("index.html", "r");
 
-	char response_data[1024];
 	fgets(response_data, 1024, html_data);
 
-	char http_header[2048] = "HTTP/1.1 200 OK\r\n\n";
 	strcat(http_header, response_data);
 
 	/* Create a server socket */
