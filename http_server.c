@@ -34,7 +34,7 @@ int main(void)
 
 	/* Define the address */
 	server_address.sin_family = AF_INET;
-	server_address.sin_port = htons(8004);
+	server_address.sin_port = htons(9003);
 	server_address.sin_addr.s_addr = INADDR_ANY;
 
 	bind(server_socket, (struct sockaddr *) &server_address, sizeof(server_address));
