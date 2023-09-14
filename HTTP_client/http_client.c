@@ -10,13 +10,13 @@
 
 int main(int argc, char **argv)
 {
-	char *address;
-	address = argv[1];
 	int client_socket;
+	char response[4096];	
+	char *address;
+	char* request = "GET / HTTP/1.1\r\n\r\n";
 	struct sockaddr_in remote_address;
-	char request[] = "GET / HTTP/1.1\r\n\r\n";
-	char response[4096];
 
+	address = argv[argc];
 	/* Create a socket */
 
 	client_socket = socket(AF_INET, SOCK_STREAM, 0);
@@ -24,7 +24,7 @@ int main(int argc, char **argv)
 	/* Connect to an address */
 	remote_address.sin_family = AF_INET;
 	remote_address.sin_port = htons(80);
-	inet_aton(address, &remote_address.sin_addr.s_addr);
+	inet_aton(address, &remote_address.sin_addr);
 
 	connect(client_socket, (struct sockaddr *) &remote_address, sizeof(remote_address));
 
