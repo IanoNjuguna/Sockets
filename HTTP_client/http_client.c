@@ -8,12 +8,19 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
+/**
+ * main - a HTTP client
+ *
+ * @argc: argument count
+ * @argv: list of arguments
+ * Return: Always 0 (Success)
+ */
 int main(int argc, char **argv)
 {
 	int client_socket;
-	char response[4096];	
+	char response[4096];
 	char *address;
-	char* request = "GET / HTTP/1.1\r\n\r\n";
+	char request[] = "GET / HTTP/1.1\r\n\r\n";
 	struct sockaddr_in remote_address;
 
 	address = argv[argc];
@@ -24,9 +31,10 @@ int main(int argc, char **argv)
 	/* Connect to an address */
 	remote_address.sin_family = AF_INET;
 	remote_address.sin_port = htons(80);
-	inet_aton(address, &remote_address.sin_addr);
+	inet_aton(address, &remote_address.sin_addr.s_addr);
 
-	connect(client_socket, (struct sockaddr *) &remote_address, sizeof(remote_address));
+	connect(client_socket, (struct sockaddr *) &remote_address,
+			sizeof(remote_address));
 
 	send(client_socket, request, sizeof(request), 0);
 	recv(client_socket, &response, sizeof(response), 0);
