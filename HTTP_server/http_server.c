@@ -37,7 +37,8 @@ int main(void)
 	server_address.sin_port = htons(9003);
 	server_address.sin_addr.s_addr = INADDR_ANY;
 
-	bind(server_socket, (struct sockaddr *) &server_address, sizeof(server_address));
+	bind(server_socket, (struct sockaddr *) &server_address,
+			sizeof(server_address));
 
 	listen(server_socket, 5);
 
