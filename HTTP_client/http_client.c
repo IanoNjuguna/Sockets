@@ -1,6 +1,12 @@
+#define _POSIX_C_SOURCE 200112L
+#define _BSD_SOURCE
+#define _DEFAULT_SOURCE
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <string.h>
+#include <errno.h>
 
 #include <sys/socket.h>
 #include <sys/types.h>
@@ -23,7 +29,7 @@ int main(int argc, char **argv)
 	char request[] = "GET / HTTP/1.1\r\n\r\n";
 	struct sockaddr_in remote_address;
 
-	address = argv[argc];
+	address = argv[argc - 1];
 	/* Create a socket */
 
 	client_socket = socket(AF_INET, SOCK_STREAM, 0);
@@ -31,10 +37,20 @@ int main(int argc, char **argv)
 	/* Connect to an address */
 	remote_address.sin_family = AF_INET;
 	remote_address.sin_port = htons(80);
-	inet_aton(address, &remote_address.sin_addr.s_addr);
+	if (inet_aton(address, &remote_address.sin_addr) == 0)
+	{
+		perror("inet_aton");
+		return (1);
+	}
 
-	connect(client_socket, (struct sockaddr *) &remote_address,
-			sizeof(remote_address));
+	if (connect(client_socket, (struct sockaddr *) &remote_address,
+				sizeof(remote_address)) == -1)
+	{
+		perror("connect");
+
+		close(client_socket);
+		exit(1);
+	}
 
 	send(client_socket, request, sizeof(request), 0);
 	recv(client_socket, &response, sizeof(response), 0);
